@@ -9,7 +9,7 @@ int main()
 	{
 		for (i = 0; i<n; i++)
 		{
-			if (a[i] == 0) continue;
+			if (a[i] == 0) continue;//把杀掉的置位0  以后遇到0就跳过
 			k++;
 			if (k != m) continue;
 			k = 0;
