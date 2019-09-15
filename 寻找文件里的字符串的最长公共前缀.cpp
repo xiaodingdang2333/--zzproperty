@@ -8,10 +8,7 @@ string longestCommonPrefix(vector<string>& strs) {
 	string result = "";
 	if (strs.empty())                //该字符数组为空，直接返回“”
 		return result;
-	for (auto i: strs)
-	{
-		reverse(i.begin(), i.end());
-	}
+
 	int i = 0;
 
 	while (i<strs[0].size())      //用第一个字串的长度来操作，因为无论他是否为最长还是最短的串，都不影响结果
