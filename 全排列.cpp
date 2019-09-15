@@ -4,7 +4,7 @@
 #include<vector>
 #include<algorithm>
 using namespace std;
-void permutation(vector<string>&result, string &str, int index, int len)
+void permutation(vector<string>&result, string &str, int index, int len)//str前不加&按字典序输出，加了不按字典序输出
 {
 	if (index == len)result.push_back(str);
 	for (int i = index; i < len; i++)
