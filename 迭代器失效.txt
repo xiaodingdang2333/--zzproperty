@@ -47,3 +47,39 @@ eg：
     
 	}
 https://blog.csdn.net/lujiandong1/article/details/49872763
+2、map、set这种关联容器
+删除当前的iterator，仅仅会使当前的iterator失效，只要在erase时，递增当前iterator即可。这是因为map之类的容器，使用了红黑树来实现，插入、删除一个结点不会对其他结点造成影响。erase迭代器只是被删元素的迭代器失效，但是返回值为void，所以要采用erase(iter++)的方式删除迭代器。
+
+解析：dataMap.erase(iter)之后,iter就已经失效了，所以iter无法自增，即iter++就会出bug.解决方案，就是在iter失效之前，先自增。
+eg：
+
+for (iter = dataMap.begin(); iter != dataMap.end(); )
+    
+{
+         
+	int nKey = iter->first;
+         
+	string strValue = iter->second;
+ 
+         
+	if (nKey % 2 == 0)
+         
+	{
+              
+ 		map<int, string>::iterator tmpIter = iter;
+	       
+		iter++;
+               
+		dataMap.erase(tmpIter);
+               //dataMap.erase(iter++) 这样也行
+ 
+         
+	}else
+	 
+	{
+	     
+ 		iter++;
+        
+ 	}
+   
+}
