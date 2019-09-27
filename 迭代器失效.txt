@@ -1,0 +1,49 @@
+1、序列式容器
+删除当前迭代器会使后面的迭代器全部失效，这是因为vetor,deque使用了连续分配的内存，删除一个元素导致后面所有的元素会向前移动一个位置。所以不能使用erase(iter++)的方式，还好erase方法可以返回下一个有效的iterator。
+eg：
+    vector<int> container;
+    
+	for (int i = 0; i < 10; i++)
+    
+	{
+        
+		container.push_back(i);
+    
+	}
+ 
+    
+	vector<int>::iterator iter;
+     
+	for (iter = container.begin(); iter != container.end(); iter++)
+   
+ 	{
+           
+ 		if (*iter > 3)
+              
+		container.erase(iter);
+    //迭代器已经被删了就不能做++操作了
+	}
+
+因为erase方法可以返回下一个有效的iterator，所以应该这样改正：
+
+     for (iter = container.begin(); iter != container.end();)
+    
+	{
+            
+		if (*iter > 3) 
+		{
+				
+			iter = container.erase(iter);
+			
+		}
+			
+		else 
+		{
+				
+			iter ++;
+			
+		}
+ 
+    
+	}
+https://blog.csdn.net/lujiandong1/article/details/49872763
