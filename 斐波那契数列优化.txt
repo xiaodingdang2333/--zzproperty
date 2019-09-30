@@ -1,0 +1,10 @@
+int f[1000005] = {0, 1, 1};
+
+int fibonaci(int i)
+{
+	if(f[i] != 0) {
+		return f[i];
+	} else {
+		return f[i] = (fibonaci(i - 1) + fibonaci(i - 2)) % 10000;
+	}
+}
