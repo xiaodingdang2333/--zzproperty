@@ -32,14 +32,103 @@ eg：Complex c2(c1);
 3、如果函数的返回值是类A的对象时，则函数返回时，
 A的复制构造函数被调用
 
+void fun(CMyclass obj_ ) {
+cout << "fun" << endl;
+}
+调用这样的函数会引发复制构造函数，开销较大，这时可以考虑使用 CMyclass & 引用类型作为参数，
+这样就不会调用复制构造函数，但是这样一旦函数内部改变了形参，实参也会改变，如果希望实参不被改变，可以采用常引用，如下所示：
+void fun(const CMyclass & obj) {
+// 函数中任何试图改变 obj 值的语句都将是变成非法
+}
+
+类型转换构造函数：只有一个参数，而且不是复制构造函数的构造函数，一般
+就可以看作是转换构造函数。
+ 当需要的时候，编译系统会自动调用转换构造函数，建立
+一个无名的临时对象(或临时变量)。 
+eg：
+class Complex {
+public:
+double real, imag;
+Complex( int i) {// 类型转换构造函数
+cout << "IntConstructor called" << endl;
+real = i; imag = 0;
+}
+};
+
+int main ()
+{
+Complex c1(7,8);
+Complex c2 = 12;
+c1 = 9; // 9 被自动转换成一个临时Complex 对象
+cout << c1.real << "," << c1.imag << endl;
+return 0;
+}
+
+析构函数没有参数和返回值，一个类只能有一个
+
+析构函数的调用：
+class CMyclass {
+public:
+~CMyclass() { cout << "destructor" << endl; }
+};
+CMyclass obj;
+CMyclass fun(CMyclass sobj ) { // 参数对象消亡也会导致析
+// 构函数被调用
+return sobj; // 函数调用返回时生成临时对象返回
+}
+int main(){
+obj = fun(obj); // 函数调用的返回值（临时对象）被
+return 0; // 用过后，该临时对象析构函数被调用
+}
+输出：
+destructor
+destructor
+destructor
+
+构造析构的调用顺序：
+Demo d1(1);
+void Func()
+{
+static Demo d2(2);
+Demo d3(3);
+cout << "func" << endl;
+}
+int main () {
+Demo d4(4);
+d4 = 6;
+cout << "main" << endl;
+{ Demo d5(5);
+}
+Func();
+cout << "main ends" << endl;
+return 0;
+}
+输出结果: :
+id=1 constructed
+id=4 constructed
+id=6 constructed
+id=6 destructed
+main
+id=5 constructed
+id=5 destructed
+id=2 constructed
+id=3 constructed
+func
+id=3 destructed
+main ends
+id=6 destructed
+id=2 destructed
+id=1 destructed//全局变量先构造的后析构
 
 
+int main() {
+A * p = new A[2];
+A * p2 = new A;
+A a;
+delete [] p;
+}//调用了三次析构函数，数组两次，p2是new出来的 不delete就不析构，再析构一次a。
 
-
-
-
-
-
+A f( ){ A b(10); return b; }//调用f函数时会先调用构造函数构造b，然后调用复制构造函数构造返回的临时变量，然后析构这两个对象
 
 
 
