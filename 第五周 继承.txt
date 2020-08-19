@@ -1,0 +1,77 @@
+继承：“是”关系。
+– 基类A，B是基类A的派生类。
+– 逻辑上要求：“一个B对象也是一个A对象”。
+eg：人派生出女人，女人也是人
+
+复合：“有”关系。
+– 类C中“有”成员变量k，k是类D的对象，则C和D是复合
+关系
+– 一般逻辑上要求：“D对象是C对象的固有属性或组成部
+分”。
+eg：点和圆，圆中有点。这里圆就是个封闭类。
+
+• 基类的private成员：可以被下列函数访问
+– 基类的成员函数
+– 基类的友员函数
+
+• 基类的public成员：可以被下列函数访问
+– 所有函数
+
+• 基类的protected成员：可以被下列函数访问
+– 基类的成员函数
+– 基类的友员函数
+– 派生类的成员函数可以访问当前对象的基类的保护成员
+
+eg：
+int main()
+{
+Father f;
+Son s;
+f.nPublic = 1; // Ok
+s.nPublic = 1; // Ok
+f.nProtected = 1; // error
+f.nPrivate = 1; // error
+s.nProtected = 1; //error
+s.nPrivate = 1; // error
+return 0;
+}
+
+在派生类的构造函数中初始化从基类继承的私有成员时，不能在函数体中初始化，只能在初始化列表中初始化。
+eg：
+Bug::Bug( int legs, int color)
+{
+nLegs = legs;
+nColor = color;
+}
+//错误的FlyBug构造函数
+FlyBug::FlyBug ( int legs,int color, int wings)
+{
+nLegs = legs; // 不能访问
+nColor = color; // 不能访问
+nType = 1; // ok
+nWings = wings;
+}
+//正确的FlyBug构造函数：
+FlyBug::FlyBug ( int legs, int color, int wings):Bug( legs, color)
+{
+nWings = wings;
+}
+
+
+在创建派生类的对象时，需要调用基类的构造函数：初始化派
+生类对象中从基类继承的成员。在执行一个派生类的构造函数
+之前，总是先执行基类的构造函数。
+
+public继承的赋值兼容规则
+
+class base { };
+class derived : public base { };
+base b;
+derived d;
+
+1） 派生类的对象可以赋值给基类对象
+b = d;
+2） 派生类对象可以初始化基类引用
+base & br = d;
+3） 派生类对象的地址可以赋值给基类指针
+base * pb = & d;
