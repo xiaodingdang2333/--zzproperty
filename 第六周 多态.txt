@@ -1,0 +1,7 @@
+多态的两种变现形式：
+派生类的指针可以赋给基类指针
+CDerived ODerived;
+CBase * p = & ODerived;
+派生类的对象可以赋给基类引用
+CDerived ODerived;
+CBase & r = ODerived;
